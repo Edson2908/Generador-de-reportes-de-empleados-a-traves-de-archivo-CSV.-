@@ -16,34 +16,14 @@ import os
 # FUNCTION DEFINITIONS
 # =====================================================================
 
-def create_sample_csv(csv_file_path):
+def validate_csv_file(csv_file_path):
     """
-    Checks if the target CSV file exists. If it does not exist, creates it
-    and populates it with default sample employee data.
+    Verifies that the input path refers to an existing CSV file.
     """
-    # Verify whether the CSV file already exists to avoid overwriting edits
-    if not os.path.exists(csv_file_path):
-        sample_employees = [
-            ["Full Name", "Username", "Department"],
-            ["Audrey Miller", "audrey", "Development"],
-            ["Arden Garcia", "ardeng", "Sales"],
-            ["Bailey Thomas", "baileyt", "Human Resources"],
-            ["Blake Sousa", "sousa", "IT infrastructure"],
-            ["Cameron Nguyen", "nguyen", "Marketing"],
-            ["Charlie Grey", "greyc", "Development"],
-            ["Chris Black", "chrisb", "User Experience Research"],
-            ["Courtney Silva", "silva", "IT infrastructure"],
-            ["Darcy Johnson", "darcy", "IT infrastructure"],
-            ["Elliot Lamb", "elliotl", "Development"]
-        ]
-
-        # Open the file in write mode and insert all rows
-        with open(csv_file_path, mode="w", newline="", encoding="utf-8") as file:
-            writer = csv.writer(file)
-            writer.writerows(sample_employees)
-        print(f"Created sample dataset at: {csv_file_path}")
-    else:
-        print(f"Existing dataset found at: {csv_file_path}. Skipping creation.")
+    if os.path.splitext(csv_file_path)[1].lower() != ".csv":
+        raise ValueError(f"The input file must have a .csv extension: {csv_file_path}")
+    if not os.path.isfile(csv_file_path):
+        raise FileNotFoundError(f"CSV file not found: {csv_file_path}")
 
 
 def read_employees(csv_file_path):
@@ -102,18 +82,19 @@ def write_report(department_counts, report_file_path):
 
 def main():
     """
-    Main execution workflow: resolves file paths, ensures sample data
-    exists, processes records, and generates the final report.
+    Main execution workflow: resolves file paths, validates the input CSV,
+    processes records, and generates the final report.
     """
     # Dynamically resolve the directory where this script is located
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Build cross-platform file paths for input CSV and output report
-    csv_file_path = os.path.join(base_dir, "employees.csv")
+    name_file = input("Enter the name of the CSV file (with .csv extension): ").strip()
+    csv_file_path = os.path.join(base_dir, name_file)
     report_file_path = os.path.join(base_dir, "report.txt")
 
-    # Step 1: Ensure input CSV file exists
-    create_sample_csv(csv_file_path)
+    # Step 1: Ensure the input is an existing CSV file
+    validate_csv_file(csv_file_path)
 
     # Step 2: Read employee records from CSV
     employees = read_employees(csv_file_path)

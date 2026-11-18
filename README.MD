@@ -7,7 +7,7 @@ A lightweight, zero-dependency Python automation script that parses employee rec
 ## Key Features
 
 * **Zero External Dependencies:** Built entirely using Python's standard library (`csv` and `os`).
-* **Smart File Initialization:** Automatically checks for an existing `employees.csv` file and generates sample data on the first run without overwriting future manual edits.
+* **CSV File Validation:** Prompts for a CSV filename and reports an error if the file is missing or does not have a `.csv` extension.
 * **Custom CSV Dialect Parsing:** Implements `csv.register_dialect` with `skipinitialspace=True` and `strict=True` to sanitize whitespace and enforce formatting integrity.
 * **Cross-Platform Path Handling:** Uses `os.path` to dynamically resolve file paths, ensuring seamless execution across Windows, Linux, and macOS.
 * **UTF-8 Encoding Support:** Safely processes special characters and accents during file read/write operations.
@@ -18,9 +18,9 @@ A lightweight, zero-dependency Python automation script that parses employee rec
 
 ```text
 employee-report-generator/
-├── generate_report.py   # Main automation script
-├── employees.csv        # Input dataset (auto-generated on first run)
-├── report.txt           # Output summary report (auto-generated)
+├── Employee Report CSV.py # Main automation script
+├── employees.csv        # Example input dataset
+├── report.txt           # Output summary report (generated)
 └── README.md            # Project documentation
 ```
 
@@ -41,11 +41,11 @@ employee-report-generator/
 
 2. **Run the script:**
    ```bash
-   python generate_report.py
+   python "Employee Report CSV.py"
    ```
-   *(On Linux/macOS, you can also make it executable with `chmod +x generate_report.py` and run `./generate_report.py`)*
+3. **Enter the CSV filename** when prompted (for example, `employees.csv`). The file must be in the same folder as the script.
 
-3. **View the generated report:**
+4. **View the generated report:**
    Open the newly created `report.txt` file in the project directory.
 
 ---
@@ -76,7 +76,7 @@ Sales:1
 
 ## How It Works
 
-1. **`create_sample_csv()`**: Verifies if `employees.csv` exists in the working directory. If missing, it populates a sample dataset.
+1. **`validate_csv_file()`**: Checks that the provided file has a `.csv` extension and exists. Otherwise, it raises an error.
 2. **`read_employees()`**: Registers a custom CSV dialect and parses each row into a Python dictionary using `csv.DictReader`.
 3. **`process_data()`**: Extracts department values, deduplicates keys using `set()`, and calculates total headcount per department.
 4. **`write_report()`**: Sorts department names alphabetically and writes the formatted `Department:Count` pairs into `report.txt`.
