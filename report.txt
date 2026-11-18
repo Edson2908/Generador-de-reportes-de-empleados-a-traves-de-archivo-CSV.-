@@ -1,0 +1,6 @@
+Development:3
+Human Resources:1
+IT infrastructure:3
+Marketing:1
+Sales:1
+User Experience Research:1
